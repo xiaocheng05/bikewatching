@@ -47,6 +47,7 @@ circle {
     stroke: #ffffff;
     stroke-width: 1.5;
     fill-opacity: 0.75;
+    pointer-events: auto;
 }
 
 header {

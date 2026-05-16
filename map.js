@@ -85,7 +85,11 @@ map.on('load', async () => {
         .attr('r', (d) => radiusScale(d.totalTraffic))
         .style('--departure-ratio', (d) =>
             d.totalTraffic === 0 ? 0.5 : stationFlow(d.departures / d.totalTraffic)
-        );
+        ).each(function (d) {
+            d3.select(this)
+                .append('title')
+                .text(`${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
+        });
 
     function getCoords(station) {
         const point = new mapboxgl.LngLat(+station.lon, +station.lat);
@@ -154,7 +158,15 @@ map.on('load', async () => {
             .attr('r', (d) => radiusScale(d.totalTraffic))
             .style('--departure-ratio', (d) =>
                 d.totalTraffic === 0 ? 0.5 : stationFlow(d.departures / d.totalTraffic)
-            );
+            ).each(function (d) {
+                // Clear out the previous tooltip title element first
+                d3.select(this).selectAll('title').remove();
+                
+                // Append the updated tooltip content cleanly
+                d3.select(this)
+                    .append('title')
+                    .text(`${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
+            });
     }
 
     timeSlider.addEventListener('input', updateTimeDisplay);
